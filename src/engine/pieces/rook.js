@@ -2,6 +2,7 @@ import Piece from './piece';
 import Square from '../square';
 
 
+
 export default class Rook extends Piece {
     constructor(player) {
         super(player);
@@ -9,20 +10,70 @@ export default class Rook extends Piece {
 
     getAvailableMoves(board) {
         let location = board.findPiece(this);
-        // let currentRow = location.row;
-        // let currentColumn = location.col;
-        let totalMovesArray = [];
+        let totalPossibleMovesArray = [];
+        let blockingPieces = [];
+        let finalMoves = [];
 
-// Vertical moves
+        // console.log('Rook, (4, 4)')
+        // console.log('FriendlyPiece, (4, 6)')
+
+        
+// Get total possible moves
         for (let i = 0; i < 8; i++) {
-            if (i != location.col) {
-                totalMovesArray.push(Square.at(location.row, i));
+            if (i != location.col ) {
+                totalPossibleMovesArray.push(Square.at(location.row, i))
             }
             if (i != location.row) {
-                totalMovesArray.push(Square.at(i, location.col));
+                totalPossibleMovesArray.push(Square.at(i, location.col))
             }
         }
-       
-        return totalMovesArray;
+
+// Get positions of pieces (blocking pieces) that are located on the possible moves
+        for (let i = 0; i < totalPossibleMovesArray.length; i++) {
+            if (board.getPiece(totalPossibleMovesArray[i])) {
+                let blockingPiece = board.getPiece(totalPossibleMovesArray[i]);
+                let blockingPieceLocation = board.findPiece(blockingPiece);
+                blockingPieces.push(blockingPieceLocation);
+            }
+        }
+
+        let blockPiecePositions = [];
+
+// Get an array of the moves (in possible moves) that are no longer accessible due to blocking pieces
+        for (let i = 0; i < blockingPieces.length; i++) {
+            let blockPieceRow = blockingPieces[i].row;
+            let blockPieceCol = blockingPieces[i].col;
+            if (blockPieceRow === location.row) { 
+                if (blockPieceCol > location.col) {
+                    for (let i = blockPieceCol; i < 8; i++) {
+                        blockPiecePositions.push(Square.at(blockPieceRow, i))
+                    }
+                } else {
+                    for (let i = blockPieceCol; i >= 0; i--) {
+                        blockPiecePositions.push(Square.at(blockPieceRow, i))
+                    }
+                }
+            } else {
+
+            }
+        }
+
+        // console.log(totalPossibleMovesArray);
+        // console.log(blockPiecePositions);
+
+        // Remove positions that are inaccessible due to blocking pieces from totalPossibleMovesArray
+        for (let i = 0; i < totalPossibleMovesArray.length; i++) {
+            for (let j = 0; j < blockPiecePositions.length; j++) {
+                if (totalPossibleMovesArray[i].row === blockPiecePositions[j].row && totalPossibleMovesArray[i].col === blockPiecePositions[j].col) {
+                    let index = totalPossibleMovesArray.indexOf(totalPossibleMovesArray[i]);
+                    totalPossibleMovesArray.splice(index, 1); // 2nd parameter means remove one item only
+                }
+            }
+        }
+
+        // console.log(totalPossibleMovesArray);
+        // console.log(totalPossibleMovesArray.length);
+        return totalPossibleMovesArray;
+
     }
 }

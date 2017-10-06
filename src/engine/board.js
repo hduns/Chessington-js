@@ -2,6 +2,7 @@ import Player from './player';
 import GameSettings from './gameSettings';
 import Square from './square';
 
+
 export default class Board {
     constructor(currentPlayer) {
         this.currentPlayer = currentPlayer ? currentPlayer : Player.WHITE;
