@@ -13,17 +13,24 @@ export default class Pawn extends Piece {
         let possibleMoves = [];
         let availableMoves = [];
         let startingPosition;
+        let endingPosition;
 
         if (this.player === Player.WHITE) {
             possibleMoves = [Square.at(location.row + 1, location.col), Square.at(location.row + 2, location.col)];
             startingPosition = 1;
+            endingPosition = 7;
         } else {
             possibleMoves = [Square.at(location.row - 1, location.col), Square.at(location.row - 2, location.col)];
             startingPosition = 6;
+            endingPosition = 0;
+        }
+
+        if (location.row === endingPosition) {
+            return [];
         }
 
         for (let i = 0; i < 2; i++) {
-            if (board.getPiece(possibleMoves[0])) {
+            if (board.getPiece(possibleMoves[0]) || location.row === endingPosition) {
                 return [];
             } else if (board.getPiece(possibleMoves[1])) {
                 availableMoves.push(possibleMoves[0]);
