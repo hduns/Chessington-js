@@ -1,4 +1,6 @@
 import Piece from './piece';
+import Square from '../square';
+
 
 export default class Rook extends Piece {
     constructor(player) {
@@ -6,6 +8,28 @@ export default class Rook extends Piece {
     }
 
     getAvailableMoves(board) {
-        return new Array(0);
+        let location = board.findPiece(this);
+        let currentRow = location.row;
+        let currentColumn = location.col;
+        let totalMovesArray = [];
+
+// Vertical moves
+        for (let i = 0; i < 8; i++) {
+            if (i != currentColumn) {
+                totalMovesArray.push(Square.at(currentRow, location.col = i));
+            }
+        }
+       
+
+// Horizontal moves
+        for (let i = 0; i < 8; i++) {
+            if (i != currentRow) {
+                totalMovesArray.push(Square.at(location.row = i, currentColumn));
+            }
+        }
+
+        console.log(totalMovesArray)
+
+        return totalMovesArray;
     }
 }

@@ -25,8 +25,5 @@ export default class Pawn extends Piece {
             return [Square.at(location.row - 1, location.col)]
         }
 
-
-
-
     }
 }
