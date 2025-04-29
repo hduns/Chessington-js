@@ -7,14 +7,15 @@ export default class Pawn extends Piece {
         super(player);
     }
 
-    
+
     getAvailableMoves(board) {
         let location = board.findPiece(this)
+
+        let availableMoves = [];
 
         if (this.player === Player.WHITE) {
             if (location.row === 1) {
                 let possibleMoves = [Square.at(location.row + 1, location.col), Square.at(location.row + 2, location.col)];
-                let availableMoves = [];
 
                 for (let i = 0; i < possibleMoves.length; i++) {
                     if (typeof board.getPiece(possibleMoves[0]) === 'object') {
@@ -25,27 +26,19 @@ export default class Pawn extends Piece {
                         availableMoves.push(possibleMoves[i]);
                     }
                 }
-                return availableMoves;
 
             } else {
-
                 let possibleMove = Square.at(location.row + 1, location.col);
-                let availableMoves = [];
-
                 if (typeof board.getPiece(possibleMove) != 'object') {
                     availableMoves.push(possibleMove);
                 }
-
-                return availableMoves.length > 0 ? availableMoves : [];
             }
+            return availableMoves;
 
         } else if (this.player === Player.BLACK) {
 
             if (location.row === 6) {
-
                 let possibleMoves = [Square.at(location.row - 1, location.col), Square.at(location.row - 2, location.col)];
-                let availableMoves = [];
-
                 for (let i = 0; i < possibleMoves.length; i++) {
                     if (typeof board.getPiece(possibleMoves[0]) === 'object') {
                         return [];
@@ -55,24 +48,14 @@ export default class Pawn extends Piece {
                         availableMoves.push(possibleMoves[i]);
                     }
                 }
-
-                return availableMoves;
-
             } else {
-
                 let possibleMove = Square.at(location.row - 1, location.col);
-                let availableMoves = [];
 
                 if (typeof board.getPiece(possibleMove) != 'object') {
                     availableMoves.push(possibleMove);
                 }
-
-                return availableMoves;
             }
+            return availableMoves;
         }
-
-
     }
-
-
 }
