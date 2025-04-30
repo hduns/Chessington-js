@@ -1,5 +1,7 @@
 import Piece from './piece';
 import Square from '../square';
+import Player from '../player';
+
 
 
 
@@ -13,10 +15,9 @@ export default class Rook extends Piece {
         let totalPossibleMovesArray = [];
         let blockingPieces = [];
         let finalMoves = [];
-
-        // console.log('Rook, (4, 4)')
-        // console.log('FriendlyPiece, (4, 6)')
-
+        let opposingTeam = this.player === Player.WHITE ? "black" : "white";
+        let sameTeam = this.player === Player.WHITE ? "white" : "black";
+        let takingMoves = [];
         
 // Get total possible moves
         for (let i = 0; i < 8; i++) {
@@ -33,7 +34,17 @@ export default class Rook extends Piece {
             if (board.getPiece(totalPossibleMovesArray[i])) {
                 let blockingPiece = board.getPiece(totalPossibleMovesArray[i]);
                 let blockingPieceLocation = board.findPiece(blockingPiece);
-                blockingPieces.push(blockingPieceLocation);
+                console.log('blockingPiece', blockingPiece);
+                console.log('blockingPiece', blockingPiece.constructor.name === "King");
+
+                if (blockingPiece.constructor.name === "King") {
+                    blockingPieces.push(blockingPieceLocation);
+                } else if (blockingPiece.player.description === sameTeam){ 
+                    blockingPieces.push(blockingPieceLocation);
+                } else if (blockingPiece.player.description === opposingTeam) { 
+                    blockingPieces.push(blockingPieceLocation);
+                    takingMoves.push(blockingPieceLocation);
+                }
             }
         }
 
@@ -53,13 +64,25 @@ export default class Rook extends Piece {
                         blockPiecePositions.push(Square.at(blockPieceRow, i))
                     }
                 }
-            } else {
+            } else if(blockPieceCol === location.col) {
+
+                if (blockPieceRow > location.row) {
+                    for (let i = blockPieceRow; i < 8; i++) {
+                        blockPiecePositions.push(Square.at(i, blockPieceCol))
+                    }
+                } else {
+                    for(let i = blockPieceRow; i >= 0; i--) {
+                        blockPiecePositions.push(Square.at(i, blockPieceCol))
+                    }
+                }
 
             }
         }
 
-        // console.log(totalPossibleMovesArray);
-        // console.log(blockPiecePositions);
+
+        console.log(totalPossibleMovesArray);
+        console.log(totalPossibleMovesArray.length);
+        console.log(blockPiecePositions);
 
         // Remove positions that are inaccessible due to blocking pieces from totalPossibleMovesArray
         for (let i = 0; i < totalPossibleMovesArray.length; i++) {
@@ -71,8 +94,14 @@ export default class Rook extends Piece {
             }
         }
 
-        // console.log(totalPossibleMovesArray);
-        // console.log(totalPossibleMovesArray.length);
+        if (takingMoves.length > 0) {
+            for (let i of takingMoves) {
+                totalPossibleMovesArray.push(i)
+            }
+        }
+
+        console.log(totalPossibleMovesArray);
+        console.log(totalPossibleMovesArray.length);
         return totalPossibleMovesArray;
 
     }
