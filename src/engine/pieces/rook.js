@@ -34,9 +34,6 @@ export default class Rook extends Piece {
             if (board.getPiece(totalPossibleMovesArray[i])) {
                 let blockingPiece = board.getPiece(totalPossibleMovesArray[i]);
                 let blockingPieceLocation = board.findPiece(blockingPiece);
-                console.log('blockingPiece', blockingPiece);
-                console.log('blockingPiece', blockingPiece.constructor.name === "King");
-
                 if (blockingPiece.constructor.name === "King") {
                     blockingPieces.push(blockingPieceLocation);
                 } else if (blockingPiece.player.description === sameTeam){ 
@@ -49,7 +46,6 @@ export default class Rook extends Piece {
         }
 
         let blockPiecePositions = [];
-
 // Get an array of the moves (in possible moves) that are no longer accessible due to blocking pieces
         for (let i = 0; i < blockingPieces.length; i++) {
             let blockPieceRow = blockingPieces[i].row;
@@ -65,7 +61,6 @@ export default class Rook extends Piece {
                     }
                 }
             } else if(blockPieceCol === location.col) {
-
                 if (blockPieceRow > location.row) {
                     for (let i = blockPieceRow; i < 8; i++) {
                         blockPiecePositions.push(Square.at(i, blockPieceCol))
@@ -75,14 +70,8 @@ export default class Rook extends Piece {
                         blockPiecePositions.push(Square.at(i, blockPieceCol))
                     }
                 }
-
             }
         }
-
-
-        console.log(totalPossibleMovesArray);
-        console.log(totalPossibleMovesArray.length);
-        console.log(blockPiecePositions);
 
         // Remove positions that are inaccessible due to blocking pieces from totalPossibleMovesArray
         for (let i = 0; i < totalPossibleMovesArray.length; i++) {
@@ -99,10 +88,6 @@ export default class Rook extends Piece {
                 totalPossibleMovesArray.push(i)
             }
         }
-
-        console.log(totalPossibleMovesArray);
-        console.log(totalPossibleMovesArray.length);
         return totalPossibleMovesArray;
-
     }
 }
