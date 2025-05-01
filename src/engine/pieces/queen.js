@@ -76,8 +76,6 @@ export default class Queen extends Piece {
             }
         }
 
-        console.log('blockingPieces', blockingPieces)
-
         let blockPiecePositions = [];
 
 // Get an array of the lateral moves (in possible moves) that are no longer accessible due to blocking pieces
@@ -107,7 +105,10 @@ export default class Queen extends Piece {
             }
         }
 
-        // Remove positions that are inaccessible due to blocking pieces from lateralmoves
+        console.log('blockingPieces', blockingPieces)
+        console.log('lateral', lateralMoves)
+
+        // Remove positions that are inaccessible due to blocking pieces from lateralmoves NEED TO CHANGE VARIABLE HERE. 
         for (let i = 0; i < lateralMoves.length; i++) {
             for (let j = 0; j < blockPiecePositions.length; j++) {
                 if (lateralMoves[i].row === blockPiecePositions[j].row && lateralMoves[i].col === blockPiecePositions[j].col) {

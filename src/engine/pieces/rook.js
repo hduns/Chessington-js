@@ -88,6 +88,7 @@ export default class Rook extends Piece {
                 totalPossibleMovesArray.push(i)
             }
         }
+
         return totalPossibleMovesArray;
     }
 }
